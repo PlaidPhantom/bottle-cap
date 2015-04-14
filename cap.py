@@ -160,7 +160,7 @@ class Cap():
     
     def set_user_roles(self, username, roles):
         with self.__db() as db:
-            db.execute("""DELETE FROM user_roles WHERE user_name = ?;""", username)
+            db.execute("""DELETE FROM user_roles WHERE user_name = ?;""", (username,))
             db.executemany("""INSERT INTO user_roles (user_name, role_name) VALUES (:user, :role);""",
                            ( { "user": username, "role": role} for role in roles ))
             db.commit()
@@ -241,7 +241,7 @@ class Cap():
 # attributes
 
 class roles():
-    def __init__(self, roles):
+    def __init__(self, *roles):
         self.roles = roles
     
     def __call__(self, func):
@@ -371,7 +371,7 @@ CREATE TABLE IF NOT EXISTS user_info
             role = sys.argv[i + 2]
             
             print("Adding role {} to user {}...".format(user, role))
-            cap.set_user_role(user, role)
+            cap.set_user_roles(user, [role])
             print("Role added.")
         
         elif sys.argv[i] == "--rem-role":
