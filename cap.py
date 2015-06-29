@@ -1,5 +1,6 @@
 from contextlib import contextmanager
 from cryptography.fernet import Fernet
+from getpass import getpass
 from hashlib import sha512
 from inspect import signature
 import pickle
@@ -328,41 +329,41 @@ CREATE TABLE IF NOT EXISTS user_info
         if sys.argv[i] == "--add-user":
             username = sys.argv[i + 1]
             
-            print("Enter password for new user {}:".format(username))
-            password = input("> ")
+            print("Enter password for new user `{}`:".format(username))
+            password = getpass("> ")
             
             print("Creating user...")
             cap.create_user(username, password)
-            print("User {} created.".format(username))
+            print("User `{}` created.".format(username))
             
         elif sys.argv[i] == "--del-user":
             username = sys.argv[i + 1]
             
             print("Deleting user...")
             cap.delete_user(username, password)
-            print("User {} deleted.".format(username))
+            print("User `{}` deleted.".format(username))
             
         elif sys.argv[i] == "--chg-pwd":
             username = sys.argv[i + 1]
             
-            print("Enter new password for user {}:".format(username))
-            password = input("> ")
+            print("Enter new password for user `{}`:".format(username))
+            password = getpass("> ")
             
             print("Changing password...")
             cap.set_password(username, password)
-            print("Password changed for user {}.".format(username))
+            print("Password changed for user `{}`.".format(username))
         
         elif sys.argv[i] == "--create-role":
             role = sys.argv[i + 1]
             
-            print("Creating role {}...".format(role))
+            print("Creating role `{}`...".format(role))
             cap.create_roles(role)
             print("Role created.")
         
         elif sys.argv[i] == "--delete-role":
             role = sys.argv[i + 1]
             
-            print("Deleting role {}...".format(role))
+            print("Deleting role `{}`...".format(role))
             cap.create_roles(role)
             print("Role deleted.")
         
@@ -370,7 +371,7 @@ CREATE TABLE IF NOT EXISTS user_info
             user = sys.argv[i + 1]
             role = sys.argv[i + 2]
             
-            print("Adding role {} to user {}...".format(user, role))
+            print("Adding role `{}` to user `{}`...".format(user, role))
             cap.set_user_roles(user, [role])
             print("Role added.")
         
@@ -378,7 +379,7 @@ CREATE TABLE IF NOT EXISTS user_info
             user = sys.argv[i + 1]
             role = sys.argv[i + 2]
             
-            print("Removing role {} from user {}...".format(user, role))
+            print("Removing role `{}` from user `{}`...".format(user, role))
             cap.set_user_role(user, role)
             print("Role removed.")
         
